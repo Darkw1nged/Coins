@@ -1,6 +1,7 @@
 package me.darkwinged.coins.commands;
 
 import me.darkwinged.coins.Coins;
+import me.darkwinged.coins.libraries.Account;
 import me.darkwinged.coins.libraries.Manager;
 import me.darkwinged.coins.libraries.Utils;
 import org.bukkit.Bukkit;
@@ -47,47 +48,47 @@ public class cmdEconomy implements CommandExecutor {
                     return true;
                 }
 
+                Account account = Manager.getAccount(target.getUniqueId());
+                if (account == null) {
+                    sender.sendMessage(Utils.chatColor("&6Coins &8» &cAn internal error occurred, please contact your system administrator for assistance."));
+                    return true;
+                }
+
                 if (!Utils.isNumber(args[2])) {
                     sender.sendMessage(Utils.chatColor("&6Coins &8» &cPlease provide a valid number!"));
                     return true;
                 }
 
                 double multiplier = Double.parseDouble(args[2]);
-                plugin.getConfig().set("players." + target.getUniqueId() + ".multiplier", multiplier);
-                plugin.saveConfig();
+                account.setMultiplier(multiplier);
                 sender.sendMessage(Utils.chatColor("&6Coins &8» &aYou have set &e" + target.getName() + "'s &fmultiplier to &e" + multiplier + "&f!"));
                 return true;
-            } else if (args[0].equalsIgnoreCase("add")) {
-                Player target = Bukkit.getPlayer(args[1]);
-                if (target == null) {
-                    sender.sendMessage(Utils.chatColor("&6Coins &8» &cPlayer not found!"));
-                    return true;
-                }
+            }
 
-                double amount = Utils.getNumberFromAbbreviation(args[2]);
-                double multiplier = plugin.getConfig().getDouble("server-multiplier") + plugin.getConfig().getDouble("players." + target.getUniqueId() + ".multiplier");
-                Manager.addCoins(target.getUniqueId(), amount * multiplier);
+            Player target = Bukkit.getPlayer(args[1]);
+            if (target == null) {
+                sender.sendMessage(Utils.chatColor("&6Coins &8» &cPlayer not found!"));
+                return true;
+            }
+
+            Account account = Manager.getAccount(target.getUniqueId());
+            if (account == null) {
+                sender.sendMessage(Utils.chatColor("&6Coins &8» &cAn internal error occurred, please contact your system administrator for assistance."));
+                return true;
+            }
+
+            double amount = Utils.getNumberFromAbbreviation(args[2]);
+
+            if (args[0].equalsIgnoreCase("add")) {
+                double multiplier = plugin.getConfig().getDouble("server-multiplier") + account.getMultiplier();
+                account.addCoins(amount * multiplier);
                 sender.sendMessage(Utils.chatColor("&6Coins &8» &fYou have successfully updated &e" + target.getName() + " &fbalance!"));
 
             } else if (args[0].equalsIgnoreCase("remove")) {
-                Player target = Bukkit.getPlayer(args[1]);
-                if (target == null) {
-                    sender.sendMessage(Utils.chatColor("&6Coins &8» &cPlayer not found!"));
-                    return true;
-                }
-
-                double amount = Utils.getNumberFromAbbreviation(args[2]);
-                Manager.removeCoins(target.getUniqueId(), amount);
+                account.removeCoins(amount);
                 sender.sendMessage(Utils.chatColor("&6Coins &8» &fYou have successfully updated &e" + target.getName() + " &fbalance!"));
             } else if (args[0].equalsIgnoreCase("set")) {
-                Player target = Bukkit.getPlayer(args[1]);
-                if (target == null) {
-                    sender.sendMessage(Utils.chatColor("&6Coins &8» &cPlayer not found!"));
-                    return true;
-                }
-
-                double amount = Utils.getNumberFromAbbreviation(args[2]);
-                Manager.setCoins(target.getUniqueId(), amount);
+                account.setCoins(amount);
                 sender.sendMessage(Utils.chatColor("&6Coins &8» &fYou have successfully updated &e" + target.getName() + " &fbalance!"));
             }
 

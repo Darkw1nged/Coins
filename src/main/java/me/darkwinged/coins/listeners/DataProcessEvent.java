@@ -1,6 +1,8 @@
 package me.darkwinged.coins.listeners;
 
+import me.darkwinged.coins.libraries.Account;
 import me.darkwinged.coins.libraries.Manager;
+import me.darkwinged.coins.libraries.Utils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,13 +19,22 @@ public class DataProcessEvent implements Listener {
         if (!Manager.loadPlayer(player)) {
             Manager.insertPlayer(player.getUniqueId());
         }
+
+        // add interest
+        Account account = Manager.getAccount(player.getUniqueId());
+        if (account == null) return;
+        if (System.currentTimeMillis() < (account.getLastGained() + (24 * 60 * 60 * 1000))) return;
+
+        double gained = account.addInterest();
+        player.sendMessage(Utils.chatColor("&6Coins &8» &fWelcome back! Today you have gained &a" + gained + " &8(" + account.getInterest() + "% ) &f coins!"));
     }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        if (!Manager.hasAccount(player.getUniqueId())) return;
-        Manager.savePlayer(player);
+        Account playerAccount = Manager.getAccount(player.getUniqueId());
+        if (playerAccount == null) return;
+        playerAccount.save();
     }
 
 }
