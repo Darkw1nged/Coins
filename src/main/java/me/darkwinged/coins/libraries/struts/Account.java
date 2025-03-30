@@ -22,7 +22,7 @@ public class Account {
         this.dataFile = new CustomConfig(plugin, "data/" + uuid, "");
         this.coins = 0;
         this.multiplier = 1;
-        this.penalty = 5;
+        this.penalty = 50;
         this.interest = 1;
         this.lastGained = System.currentTimeMillis();
     }

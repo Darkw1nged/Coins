@@ -8,6 +8,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.Arrays;
 
@@ -51,7 +52,6 @@ public abstract class Menu implements InventoryHolder {
     }
 
     public ItemStack makeItem(Material material, String displayName, String... lore) {
-
         ItemStack item = new ItemStack(material);
         ItemMeta itemMeta = item.getItemMeta();
         itemMeta.setDisplayName(displayName);
@@ -59,6 +59,17 @@ public abstract class Menu implements InventoryHolder {
         itemMeta.setLore(Arrays.asList(lore));
         item.setItemMeta(itemMeta);
 
+        return item;
+    }
+
+    public ItemStack playerSkull(Player player) {
+        ItemStack item = new ItemStack(Material.PLAYER_HEAD, 1);
+        SkullMeta meta = (SkullMeta) item.getItemMeta();
+
+        meta.setOwningPlayer(player);
+        meta.setDisplayName(player.getName());
+
+        item.setItemMeta(meta);
         return item;
     }
 }

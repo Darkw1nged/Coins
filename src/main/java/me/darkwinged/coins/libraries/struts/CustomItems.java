@@ -38,10 +38,10 @@ public class CustomItems {
         return item;
     }
 
-    public static ItemStack coinflip(Coinflip.Choice choice, UUID playerID, double worth) {
+    public static ItemStack coinflip(Coinflip cf) {
         ItemStack item;
         String color;
-        switch (choice) {
+        switch (cf.getChoice()) {
             case Coinflip.Choice.BLUE -> {
                 item = new ItemStack(Material.BLUE_WOOL);
                 color = "&9Blue";
@@ -65,17 +65,16 @@ public class CustomItems {
         }
 
         ItemMeta meta = item.getItemMeta();
-        Player player = Bukkit.getPlayer(playerID);
+        Player player = Bukkit.getPlayer(cf.getOwner());
 
         meta.setDisplayName(Utils.chatColor("&f" + player.getName() + " Coinflip"));
         meta.setLore(Arrays.asList(
-                Utils.chatColor("&9&l | &fBet: &a" + worth),
+                Utils.chatColor("&9&l | &fBet: &a" + cf.getWorth()),
                 Utils.chatColor("&9&l | &fColor: " + color),
                 "",
                 Utils.chatColor("&eClick to challenge")
         ));
-        meta.getPersistentDataContainer().set(new NamespacedKey(plugin, "cf_bet"), PersistentDataType.DOUBLE, worth);
-        meta.getPersistentDataContainer().set(new NamespacedKey(plugin, "cf_uuid"), PersistentDataType.STRING, playerID.toString());
+        meta.getPersistentDataContainer().set(new NamespacedKey(plugin, "coinflip"), PersistentDataType.STRING, cf.getGameID().toString());
 
         item.setItemMeta(meta);
         return item;
