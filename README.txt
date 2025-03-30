@@ -20,4 +20,3 @@ Economy
 -> Slot machines
    -> Reference: https://www.spigotmc.org/resources/slot-machine.22023/
 [COMPLETE] -> Vault support
--> Funds: Personal (Personal is 3 days to reach the goal) and Global (Global is 7 days to reach the goal)
