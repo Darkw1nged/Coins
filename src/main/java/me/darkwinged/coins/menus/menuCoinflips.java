@@ -80,6 +80,10 @@ public class menuCoinflips extends Menu {
 
     public void setMenuItems() {
         for (int i=27; i<35; i++) {
+            if (i== 31) {
+                inventory.setItem(i, CustomItems.coinflipStats(player));
+                continue;
+            }
             inventory.setItem(i, this.FILLER_GLASS);
         }
 

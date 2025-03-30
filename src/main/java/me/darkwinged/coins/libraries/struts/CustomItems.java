@@ -1,6 +1,7 @@
 package me.darkwinged.coins.libraries.struts;
 
 import me.darkwinged.coins.Coins;
+import me.darkwinged.coins.libraries.Manager;
 import me.darkwinged.coins.libraries.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -75,6 +76,24 @@ public class CustomItems {
                 Utils.chatColor("&eClick to challenge")
         ));
         meta.getPersistentDataContainer().set(new NamespacedKey(plugin, "coinflip"), PersistentDataType.STRING, cf.getGameID().toString());
+
+        item.setItemMeta(meta);
+        return item;
+    }
+
+    public static ItemStack coinflipStats(Player player) {
+        ItemStack item = new ItemStack(Material.BOOK);
+        ItemMeta meta = item.getItemMeta();
+
+        meta.setDisplayName(Utils.chatColor("&eCoinflip Stats"));
+
+        Account account = Manager.getAccount(player.getUniqueId());
+        if (account == null) return item;
+
+        meta.setLore(Arrays.asList(
+                Utils.chatColor("&e&l | &fWins/Losses: &a" + account.getCoinflipWins() + "&f/&c" + account.getCoinflipLosses()),
+                Utils.chatColor("&e&l | &fGained/Lost: &a" + account.getCoinflipTotalWon() + "&f/&c" + account.getCoinflipTotalLost())
+        ));
 
         item.setItemMeta(meta);
         return item;

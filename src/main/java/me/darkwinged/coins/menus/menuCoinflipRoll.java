@@ -81,6 +81,13 @@ public class menuCoinflipRoll extends Menu {
                     Account winnerAccount = Manager.getAccount(winner.getUniqueId());
                     if (winnerAccount == null) return;
                     winnerAccount.addCoins(coinflip.getWorth() * 2);
+                    winnerAccount.addCoinflipWin();
+                    winnerAccount.addCoinflipTotalWon(coinflip.getWorth());
+
+                    Account loserAccount = Manager.getAccount(loser.getUniqueId());
+                    if (loserAccount == null) return;
+                    loserAccount.addCoinflipLoss();
+                    loserAccount.addCoinflipTotalLost(coinflip.getWorth());
                     return;
                 }
 

@@ -17,6 +17,12 @@ public class Account {
     private int interest;
     private long lastGained;
 
+    // --- [ Coinflip Stats ] ---
+    private int coinflipWins;
+    private int coinflipLosses;
+    private double coinflipTotalWon; // Total amount of coins won from coinflips
+    private double coinflipTotalLost; // Total amount of coins lost from coinflips
+
     public Account(UUID uuid) {
         this.uuid = uuid;
         this.dataFile = new CustomConfig(plugin, "data/" + uuid, "");
@@ -25,6 +31,10 @@ public class Account {
         this.penalty = 50;
         this.interest = 1;
         this.lastGained = System.currentTimeMillis();
+        this.coinflipWins = 0;
+        this.coinflipLosses = 0;
+        this.coinflipTotalWon = 0;
+        this.coinflipTotalLost = 0;
     }
 
     // ---- [ Getters ] ----
@@ -52,6 +62,22 @@ public class Account {
         return this.lastGained;
     }
 
+    public int getCoinflipWins() {
+        return this.coinflipWins;
+    }
+
+    public int getCoinflipLosses() {
+        return this.coinflipLosses;
+    }
+
+    public double getCoinflipTotalWon() {
+        return this.coinflipTotalWon;
+    }
+
+    public double getCoinflipTotalLost() {
+        return this.coinflipTotalLost;
+    }
+
     // ---- [ Setters ] ----
     public void setCoins(double coins) {
         this.coins = coins;
@@ -71,6 +97,22 @@ public class Account {
 
     public void setLastGained(long lastGained) {
         this.lastGained = lastGained;
+    }
+
+    public void setCoinflipWins(int wins) {
+        this.coinflipWins = wins;
+    }
+
+    public void setCoinflipLosses(int losses) {
+        this.coinflipLosses = losses;
+    }
+
+    public void setCoinflipTotalWon(double totalWon) {
+        this.coinflipTotalWon = totalWon;
+    }
+
+    public void setCoinflipTotalLost(double totalLost) {
+        this.coinflipTotalLost = totalLost;
     }
 
     // ---- [ Helper Methods ] ----
@@ -99,6 +141,22 @@ public class Account {
         return toTake;
     }
 
+    public void addCoinflipWin() {
+        this.coinflipWins++;
+    }
+
+    public void addCoinflipLoss() {
+        this.coinflipLosses++;
+    }
+
+    public void addCoinflipTotalWon(double coins) {
+        this.coinflipTotalWon += coins;
+    }
+
+    public void addCoinflipTotalLost(double coins) {
+        this.coinflipTotalLost += coins;
+    }
+
     // ---- [ Save method ] ----
     public void save() {
         YamlConfiguration config = dataFile.getConfig();
@@ -108,6 +166,10 @@ public class Account {
         config.set("penalty", this.penalty);
         config.set("interest.percent", this.interest);
         config.set("interest.lastGained", this.lastGained);
+        config.set("coinflip.wins", this.coinflipWins);
+        config.set("coinflip.losses", this.coinflipLosses);
+        config.set("coinflip.totalWon", this.coinflipTotalWon);
+        config.set("coinflip.totalLost", this.coinflipTotalLost);
         dataFile.saveConfig();
     }
 

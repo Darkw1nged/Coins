@@ -49,8 +49,13 @@ public class Manager {
 
         playerAccount.setCoins(config.getDouble("coins"));
         playerAccount.setMultiplier(config.getDouble("multiplier"));
+        playerAccount.setPenalty(config.getInt("penalty"));
         playerAccount.setInterestAmount(config.getInt("interest.percent"));
         playerAccount.setLastGained(config.getLong("interest.lastGained"));
+        playerAccount.setCoinflipWins(config.getInt("coinflips.wins"));
+        playerAccount.setCoinflipLosses(config.getInt("coinflips.losses"));
+        playerAccount.setCoinflipTotalWon(config.getDouble("coinflips.totalWon"));
+        playerAccount.setCoinflipTotalLost(config.getDouble("coinflips.totalLost"));
         return true;
     }
 
