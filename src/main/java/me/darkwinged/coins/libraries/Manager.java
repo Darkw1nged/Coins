@@ -1,11 +1,12 @@
 package me.darkwinged.coins.libraries;
 
 import me.darkwinged.coins.Coins;
+import me.darkwinged.coins.libraries.struts.Account;
+import me.darkwinged.coins.libraries.struts.CustomConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
-import java.io.File;
 import java.util.*;
 
 public class Manager {

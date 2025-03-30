@@ -1,6 +1,6 @@
 package me.darkwinged.coins.listeners;
 
-import me.darkwinged.coins.libraries.Account;
+import me.darkwinged.coins.libraries.struts.Account;
 import me.darkwinged.coins.libraries.Manager;
 import me.darkwinged.coins.libraries.Utils;
 import org.bukkit.entity.Player;

@@ -19,5 +19,5 @@ Economy
 [COMPLETE] -> When a player dies, they lost %5 of their counts ( default: 5% | -0.5% upgrade each time )
 -> Slot machines
    -> Reference: https://www.spigotmc.org/resources/slot-machine.22023/
--> Vault support
+[COMPLETE] -> Vault support
 -> Funds: Personal (Personal is 3 days to reach the goal) and Global (Global is 7 days to reach the goal)

@@ -1,4 +1,4 @@
-package me.darkwinged.coins.libraries;
+package me.darkwinged.coins.libraries.struts;
 
 import me.darkwinged.coins.Coins;
 import org.bukkit.configuration.file.YamlConfiguration;

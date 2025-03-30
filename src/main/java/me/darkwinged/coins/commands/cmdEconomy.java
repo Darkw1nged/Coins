@@ -1,7 +1,7 @@
 package me.darkwinged.coins.commands;
 
 import me.darkwinged.coins.Coins;
-import me.darkwinged.coins.libraries.Account;
+import me.darkwinged.coins.libraries.struts.Account;
 import me.darkwinged.coins.libraries.Manager;
 import me.darkwinged.coins.libraries.Utils;
 import org.bukkit.Bukkit;
