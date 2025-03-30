@@ -1,4 +1,4 @@
-name: Coins
+name: Coinswithdraw
 version: '1.0-SNAPSHOT'
 main: me.darkwinged.coins.Coins
 api-version: '1.21'
@@ -18,3 +18,5 @@ commands:
     description: Allows players to transfer money to each other
     aliases:
       - transfer
+  withdraw:
+    description: Allows players to withdraw from their stash

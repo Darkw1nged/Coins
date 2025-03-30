@@ -1,10 +1,10 @@
 Economy
 -> Coins are the default currency and all upgrades will use it
 -> Plugin(s): Black Market, Upgrades, Homestead, Gambling, Levelled Mobs
--> Banknotes: * https://www.spigotmc.org/resources/1-8-8-1-21-4-deluxewithdraw-vault-addon.102118/
+[COMPLETE] -> Banknotes: * https://www.spigotmc.org/resources/1-8-8-1-21-4-deluxewithdraw-vault-addon.102118/
 -> Commands:
    [COMPLETE] -> /coins (player) | Allows a player to view their or a person's coins
-   -> /withdraw <amount> | Allows a player to withdraw their coins
+   [COMPLETE] -> /withdraw <amount> | Allows a player to withdraw their coins
    [COMPLETE] -> /pay <player> | Allows the player to pay another
    /* Admin Only Commands */
    [COMPLETE] -> /economy <add|remove|set|> <player> <amount> | Changes the players coin balance
