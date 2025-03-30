@@ -3,20 +3,25 @@ version: '1.0-SNAPSHOT'
 main: me.darkwinged.coins.Coins
 api-version: '1.21'
 commands:
+  economy:
+    description: The admin side of things
+    aliases:
+      - econ
+      - eco
   coins:
     description: Checks the amount of coins a player has
     aliases:
       - balance
       - bal
       - money
-  economy:
-    description: The admin side of things
-    aliases:
-      - econ
-      - eco
   pay:
     description: Allows players to transfer money to each other
     aliases:
       - transfer
   withdraw:
     description: Allows players to withdraw from their stash
+  coinflip:
+    description: Allows players to create a new coinflip
+    aliases:
+      - cf
+      - coinflips

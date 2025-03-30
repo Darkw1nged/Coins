@@ -1,9 +1,6 @@
 package me.darkwinged.coins;
 
-import me.darkwinged.coins.commands.cmdCoins;
-import me.darkwinged.coins.commands.cmdEconomy;
-import me.darkwinged.coins.commands.cmdPay;
-import me.darkwinged.coins.commands.cmdWithdraw;
+import me.darkwinged.coins.commands.*;
 import me.darkwinged.coins.libraries.Manager;
 import me.darkwinged.coins.libraries.Utils;
 import me.darkwinged.coins.libraries.vault.CoinEconomy;
@@ -32,17 +29,20 @@ public final class Coins extends JavaPlugin {
         getCommand("balance").setExecutor(new cmdCoins());
         getCommand("pay").setExecutor(new cmdPay());
         getCommand("withdraw").setExecutor(new cmdWithdraw());
+        getCommand("coinflip").setExecutor(new cmdCoinflip());
 
         getServer().getPluginManager().registerEvents(new DataProcessEvent(), this);
         getServer().getPluginManager().registerEvents(new DeathEvent(), this);
         getServer().getPluginManager().registerEvents(new SatchelEvent(), this);
         Manager.loadAllPlayers();
+        Manager.loadCoinflips();
 
         getServer().getConsoleSender().sendMessage(Utils.chatColor("&6Coins &8» &aPlugin has been enabled!"));
     }
 
     public void onDisable() {
         Manager.saveAllPlayers();
+        Manager.saveCoinflips();
         vaultHook.unhook();
         getServer().getConsoleSender().sendMessage(Utils.chatColor("&6Coins &8» &cPlugin has been disabled!"));
     }
