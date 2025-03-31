@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
+import java.io.File;
 import java.util.*;
 
 public class Manager {
@@ -40,12 +41,12 @@ public class Manager {
         accounts.add(newAccount);
     }
 
-    public static boolean loadPlayer(Player player) {
-        CustomConfig dataFile = new CustomConfig(plugin, "data/" + player.getUniqueId(), "");
+    public static boolean loadAccount(UUID uuid) {
+        CustomConfig dataFile = new CustomConfig(plugin, "data/" + uuid, "");
         if (!dataFile.getCustomConfigFile().exists()) return false;
 
         YamlConfiguration config = dataFile.getConfig();
-        Account playerAccount = new Account(player.getUniqueId());
+        Account playerAccount = new Account(uuid);
 
         playerAccount.setCoins(config.getDouble("coins"));
         playerAccount.setMultiplier(config.getDouble("multiplier"));
@@ -59,16 +60,43 @@ public class Manager {
         return true;
     }
 
-    public static void saveAllPlayers() {
+    public static void saveAllAccounts() {
         for (Account account : accounts) {
             account.save();
         }
     }
 
-    public static void loadAllPlayers() {
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            loadPlayer(player);
+    public static void loadAllAccounts() {
+        File folder = new File(plugin.getDataFolder() + "/data");
+        File[] listOfFiles = folder.listFiles();
+        if (listOfFiles == null) return;
+
+        for (File file : listOfFiles) {
+            String name = file.getName();
+            loadAccount(UUID.fromString(name.split(".yml")[0]));
         }
+    }
+
+    public static List<Account> top10Players() {
+        List<Account> result = new ArrayList<>();
+
+        int positionToFind = 1;
+        while (positionToFind < Integer.min(accounts.size(), 10)) {
+            double maximum = Double.MIN_VALUE;
+            Account nextAccount = null;
+
+            for (Account account : accounts) {
+                if (result.contains(account)) continue;
+                if (account.getCoins() > maximum) {
+                    maximum = account.getCoins();
+                    nextAccount = account;
+                }
+            }
+            result.add(nextAccount);
+            positionToFind++;
+        }
+
+        return result;
     }
 
     // ---- [ Coinflips ] ----

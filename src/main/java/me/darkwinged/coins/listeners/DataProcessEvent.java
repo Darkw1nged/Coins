@@ -16,7 +16,7 @@ public class DataProcessEvent implements Listener {
         Player player = event.getPlayer();
         if (Manager.hasAccount(player.getUniqueId())) return;
 
-        if (!Manager.loadPlayer(player)) {
+        if (!Manager.loadAccount(player.getUniqueId())) {
             Manager.insertPlayer(player.getUniqueId());
         }
 

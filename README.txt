@@ -8,11 +8,12 @@ Economy
    [COMPLETE] -> /pay <player> | Allows the player to pay another
    [COMPLETE] -> /coinflip | Will open the coinflip gui
    [COMPLETE] -> /coinflip create <amount> <choice> | Will create a new coinflip for the specified amount
+   [COMPLETE] -> /leaderboard | Shows the top 10 player coin balance
    -> /insurance | Will open the insurance gui
    /* Admin Only Commands */
    [COMPLETE] -> /economy <add|remove|set|> <player> <amount> | Changes the players coin balance
    [COMPLETE] -> /economy multiplier <player|server> <multiplier> | Changes the multiplier for either the player or server
--> Leaderboard shows the top 10 people in the server
+[COMPLETE] -> Leaderboard shows the top 10 people in the server
 [COMPLETE] -> Interest: Each day the player logs on, they gain interest, This can be upgraded, 10% interest max ( default: 1% | +1% upgrade each time )
 -> Loans: A player can only do 1 loan for a balance of up to 100,000 coins, if they get denied due to their daily income then they can not apply again for 5 days
 -> Lottery: Each day, a new type of lottery will be drawn

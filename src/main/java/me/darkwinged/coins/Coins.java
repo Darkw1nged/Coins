@@ -30,18 +30,19 @@ public final class Coins extends JavaPlugin {
         getCommand("pay").setExecutor(new cmdPay());
         getCommand("withdraw").setExecutor(new cmdWithdraw());
         getCommand("coinflip").setExecutor(new cmdCoinflip());
+        getCommand("leaderboard").setExecutor(new cmdLeaderboard());
 
         getServer().getPluginManager().registerEvents(new DataProcessEvent(), this);
         getServer().getPluginManager().registerEvents(new DeathEvent(), this);
         getServer().getPluginManager().registerEvents(new SatchelEvent(), this);
-        Manager.loadAllPlayers();
+        Manager.loadAllAccounts();
         Manager.loadCoinflips();
 
         getServer().getConsoleSender().sendMessage(Utils.chatColor("&6Coins &8» &aPlugin has been enabled!"));
     }
 
     public void onDisable() {
-        Manager.saveAllPlayers();
+        Manager.saveAllAccounts();
         Manager.saveCoinflips();
         vaultHook.unhook();
         getServer().getConsoleSender().sendMessage(Utils.chatColor("&6Coins &8» &cPlugin has been disabled!"));

@@ -25,3 +25,5 @@ commands:
     aliases:
       - cf
       - coinflips
+  leaderboard:
+    description: Allows players to see who has the most coins
