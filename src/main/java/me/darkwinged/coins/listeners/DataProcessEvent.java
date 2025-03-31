@@ -14,9 +14,7 @@ public class DataProcessEvent implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        if (Manager.hasAccount(player.getUniqueId())) return;
-
-        if (!Manager.loadAccount(player.getUniqueId())) {
+        if (!Manager.hasAccount(player.getUniqueId())) {
             Manager.insertPlayer(player.getUniqueId());
         }
 

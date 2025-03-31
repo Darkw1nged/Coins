@@ -1,4 +1,4 @@
-name: Coinswithdraw
+name: Coins
 version: '1.0-SNAPSHOT'
 main: me.darkwinged.coins.Coins
 api-version: '1.21'
@@ -27,3 +27,5 @@ commands:
       - coinflips
   leaderboard:
     description: Allows players to see who has the most coins
+  insurance:
+    description: Allows players to buy insurance for their items and experience

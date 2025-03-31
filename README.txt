@@ -9,7 +9,7 @@ Economy
    [COMPLETE] -> /coinflip | Will open the coinflip gui
    [COMPLETE] -> /coinflip create <amount> <choice> | Will create a new coinflip for the specified amount
    [COMPLETE] -> /leaderboard | Shows the top 10 player coin balance
-   -> /insurance | Will open the insurance gui
+   [COMPLETE] -> /insurance | Will open the insurance gui
    /* Admin Only Commands */
    [COMPLETE] -> /economy <add|remove|set|> <player> <amount> | Changes the players coin balance
    [COMPLETE] -> /economy multiplier <player|server> <multiplier> | Changes the multiplier for either the player or server

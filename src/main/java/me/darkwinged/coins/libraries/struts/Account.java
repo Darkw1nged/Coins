@@ -3,6 +3,8 @@ package me.darkwinged.coins.libraries.struts;
 import me.darkwinged.coins.Coins;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.UUID;
 
 public class Account {
@@ -14,6 +16,7 @@ public class Account {
     private double coins;
     private double multiplier;
     private int penalty;
+    private Date insurance;
     private int interest;
     private long lastGained;
 
@@ -29,8 +32,15 @@ public class Account {
         this.coins = 0;
         this.multiplier = 1;
         this.penalty = 50;
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        this.insurance = calendar.getTime();
+
         this.interest = 1;
         this.lastGained = System.currentTimeMillis();
+
+        // Coinflip stats
         this.coinflipWins = 0;
         this.coinflipLosses = 0;
         this.coinflipTotalWon = 0;
@@ -52,6 +62,10 @@ public class Account {
 
     public int getPenalty() {
         return this.penalty;
+    }
+
+    public Date getInsurance() {
+        return this.insurance;
     }
 
     public int getInterest() {
@@ -91,7 +105,11 @@ public class Account {
         this.penalty = penalty;
     }
 
-    public void setInterestAmount(int interest) {
+    public void setInsurance(Date insurance) {
+        this.insurance = insurance;
+    }
+
+    public void setInterest(int interest) {
         this.interest = interest;
     }
 
@@ -99,20 +117,20 @@ public class Account {
         this.lastGained = lastGained;
     }
 
-    public void setCoinflipWins(int wins) {
-        this.coinflipWins = wins;
+    public void setCoinflipWins(int coinflipWins) {
+        this.coinflipWins = coinflipWins;
     }
 
-    public void setCoinflipLosses(int losses) {
-        this.coinflipLosses = losses;
+    public void setCoinflipLosses(int coinflipLosses) {
+        this.coinflipLosses = coinflipLosses;
     }
 
-    public void setCoinflipTotalWon(double totalWon) {
-        this.coinflipTotalWon = totalWon;
+    public void setCoinflipTotalWon(double coinflipTotalWon) {
+        this.coinflipTotalWon = coinflipTotalWon;
     }
 
-    public void setCoinflipTotalLost(double totalLost) {
-        this.coinflipTotalLost = totalLost;
+    public void setCoinflipTotalLost(double coinflipTotalLost) {
+        this.coinflipTotalLost = coinflipTotalLost;
     }
 
     // ---- [ Helper Methods ] ----
@@ -160,10 +178,11 @@ public class Account {
     // ---- [ Save method ] ----
     public void save() {
         YamlConfiguration config = dataFile.getConfig();
-        config.set("uuid", this.uuid);
+        config.set("uuid", this.uuid.toString());
         config.set("coins", this.coins);
         config.set("multiplier", this.multiplier);
         config.set("penalty", this.penalty);
+        config.set("insurance", this.insurance);
         config.set("interest.percent", this.interest);
         config.set("interest.lastGained", this.lastGained);
         config.set("coinflip.wins", this.coinflipWins);

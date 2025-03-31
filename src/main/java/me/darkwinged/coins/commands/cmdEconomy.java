@@ -81,6 +81,11 @@ public class cmdEconomy implements CommandExecutor {
 
             if (args[0].equalsIgnoreCase("add")) {
                 double multiplier = plugin.getConfig().getDouble("server-multiplier") + account.getMultiplier();
+                if (multiplier == 2) {
+                    account.addCoins(amount);
+                    sender.sendMessage(Utils.chatColor("&6Coins &8» &fYou have successfully updated &e" + target.getName() + " &fbalance!"));
+                    return true;
+                }
                 account.addCoins(amount * multiplier);
                 sender.sendMessage(Utils.chatColor("&6Coins &8» &fYou have successfully updated &e" + target.getName() + " &fbalance!"));
 

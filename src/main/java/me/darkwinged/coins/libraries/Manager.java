@@ -51,12 +51,17 @@ public class Manager {
         playerAccount.setCoins(config.getDouble("coins"));
         playerAccount.setMultiplier(config.getDouble("multiplier"));
         playerAccount.setPenalty(config.getInt("penalty"));
-        playerAccount.setInterestAmount(config.getInt("interest.percent"));
+        playerAccount.setInsurance(new Date(config.getLong("insurance")));
+        playerAccount.setInterest(config.getInt("interest.percent"));
         playerAccount.setLastGained(config.getLong("interest.lastGained"));
+
+        // Coinflip stats
         playerAccount.setCoinflipWins(config.getInt("coinflips.wins"));
         playerAccount.setCoinflipLosses(config.getInt("coinflips.losses"));
         playerAccount.setCoinflipTotalWon(config.getDouble("coinflips.totalWon"));
         playerAccount.setCoinflipTotalLost(config.getDouble("coinflips.totalLost"));
+
+        accounts.add(playerAccount);
         return true;
     }
 
@@ -73,7 +78,7 @@ public class Manager {
 
         for (File file : listOfFiles) {
             String name = file.getName();
-            loadAccount(UUID.fromString(name.split(".yml")[0]));
+            loadAccount(UUID.fromString(name.split("\\.")[0]));
         }
     }
 
@@ -136,6 +141,7 @@ public class Manager {
     public static void loadCoinflips() {
         CustomConfig dataFile = new CustomConfig(plugin, "coinflips", "");
         YamlConfiguration config = dataFile.getConfig();
+        if (!config.contains("games")) return;
 
         for (String key : config.getConfigurationSection("games").getKeys(false)) {
             UUID owner = UUID.fromString(config.getString("games." + key + ".Owner"));

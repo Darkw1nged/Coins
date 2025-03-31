@@ -99,4 +99,35 @@ public class CustomItems {
         return item;
     }
 
+    public static ItemStack insuranceStatus(Player player) {
+        ItemStack item = new ItemStack(Material.PAPER);
+        ItemMeta meta = item.getItemMeta();
+
+        meta.setDisplayName(Utils.chatColor("&eInsurance Status"));
+
+        Account account = Manager.getAccount(player.getUniqueId());
+        if (account == null) return item;
+
+        long diff = account.getInsurance().getTime() - System.currentTimeMillis();
+        long days = diff / (1000 * 60 * 60 * 24);
+        long hours = diff / (1000 * 60 * 60) % 24;
+        long minutes = diff / (1000 * 60) % 60;
+        long seconds = diff / 1000 % 60;
+
+        if (diff < 0) {
+            meta.setLore(Arrays.asList(
+                    Utils.chatColor("&e&l | &fInsurance: &cExpired"),
+                    Utils.chatColor("&e&l | &fTime left: &c0s")
+            ));
+        } else {
+            meta.setLore(Arrays.asList(
+                    Utils.chatColor("&e&l | &fInsurance: &aActive"),
+                    Utils.chatColor("&e&l | &fTime left: &a" + days + "d " + hours + "h " + minutes + "m " + seconds + "s")
+            ));
+        }
+
+        item.setItemMeta(meta);
+        return item;
+    }
+
 }
