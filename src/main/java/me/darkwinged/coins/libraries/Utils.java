@@ -2,11 +2,16 @@ package me.darkwinged.coins.libraries;
 
 import me.darkwinged.coins.Coins;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.UUID;
 
 public class Utils {
@@ -14,8 +19,7 @@ public class Utils {
     private static final Coins plugin = Coins.getInstance;
 
     // ---- [ Lists and Maps ] ----
-    public static final HashMap<UUID, Integer> TeleportDelay = new HashMap<>();
-    public static final HashMap<UUID, Integer> Cooldown = new HashMap<>();
+    public static Map<ArmorStand, Long> activeHolograms = new HashMap<>();
 
     // ---- [ Managing chat color within the plugin ] ----
     public static String chatColor(String s) {
@@ -71,6 +75,38 @@ public class Utils {
             case 'n' -> number * 1000000000000000000000000000000.0;
             default -> Double.parseDouble(s);
         };
+    }
+
+    // ---- [ Managing holograms for small amount of features ] ----
+    public static void moveUpHologram(String name, Location loc, int length) {
+        ArmorStand holo = loc.getWorld().spawn(loc, ArmorStand.class);
+
+        // ---- [ Settings flags for entity ] ----
+        holo.setCustomName(chatColor(name));
+        holo.setCustomNameVisible(true);
+        holo.setGravity(false);
+        holo.setInvisible(true);
+        holo.setInvulnerable(false);
+        holo.setSmall(true);
+        holo.setArms(false);
+        holo.setBasePlate(false);
+        holo.setMetadata("hologram", new FixedMetadataValue(plugin, UUID.randomUUID().toString()));
+
+        activeHolograms.put(holo, System.currentTimeMillis());
+        new BukkitRunnable() {
+            public void run() {
+                if (!activeHolograms.isEmpty() && activeHolograms.containsKey(holo)) {
+                    long timeLeft = ((activeHolograms.get(holo) / 1000) + length) - (System.currentTimeMillis() / 1000);
+                    if (timeLeft <= 0) {
+                        activeHolograms.remove(holo);
+                        holo.remove();
+                        cancel();
+                    } else {
+                        holo.teleport(new Location(holo.getWorld(), holo.getLocation().getX(), holo.getLocation().getY() + .01, holo.getLocation().getZ()));
+                    }
+                }
+            }
+        }.runTaskTimer(plugin, 1, 1);
     }
 
     // ---- [ Check for combat tag via combat_tag ] ----

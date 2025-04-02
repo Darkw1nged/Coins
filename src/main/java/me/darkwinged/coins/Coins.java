@@ -22,12 +22,8 @@ public final class Coins extends JavaPlugin {
         vaultHook = new VaultHook();
         vaultHook.hook();
         registerCommands();
+        registerEvents();
 
-        getServer().getPluginManager().registerEvents(new MenuEvent(), this);
-        getServer().getPluginManager().registerEvents(new DataProcessEvent(), this);
-        getServer().getPluginManager().registerEvents(new DeathEvent(), this);
-        getServer().getPluginManager().registerEvents(new SatchelEvent(), this);
-        getServer().getPluginManager().registerEvents(new InsuranceEvent(), this);
         Manager.loadAllAccounts();
         Manager.loadCoinflips();
 
@@ -39,6 +35,15 @@ public final class Coins extends JavaPlugin {
         Manager.saveCoinflips();
         vaultHook.unhook();
         getServer().getConsoleSender().sendMessage(Utils.chatColor("&6Coins &8» &cPlugin has been disabled!"));
+    }
+
+    public void registerEvents() {
+        getServer().getPluginManager().registerEvents(new MenuEvent(), this);
+        getServer().getPluginManager().registerEvents(new DataProcessEvent(), this);
+        getServer().getPluginManager().registerEvents(new DeathEvent(), this);
+        getServer().getPluginManager().registerEvents(new SatchelEvent(), this);
+        getServer().getPluginManager().registerEvents(new InsuranceEvent(), this);
+        getServer().getPluginManager().registerEvents(new ScavengeEvent(), this);
     }
 
     public void registerCommands() {
