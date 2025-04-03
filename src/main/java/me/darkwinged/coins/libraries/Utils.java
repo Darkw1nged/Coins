@@ -136,6 +136,7 @@ public class Utils {
 
     public static String getCurrentTimeOfDay() {
         World world = Bukkit.getWorld("world");
+        if (world == null) return "00:00"; // Fallback in case the world is not found
         long totalTimeActive = world.getFullTime();
 
         // Get the time of day (this will be the time modulo 24000 to get it within a single day cycle)

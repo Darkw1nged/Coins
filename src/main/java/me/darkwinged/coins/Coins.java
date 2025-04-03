@@ -11,6 +11,7 @@ import me.darkwinged.coins.listeners.*;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.plugin.java.JavaPlugin;
 
+@SuppressWarnings("all")
 public final class Coins extends JavaPlugin {
 
     public static Coins getInstance;

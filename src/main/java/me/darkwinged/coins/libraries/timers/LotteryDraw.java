@@ -1,5 +1,4 @@
 package me.darkwinged.coins.libraries.timers;
-import me.darkwinged.coins.Coins;
 import me.darkwinged.coins.libraries.Utils;
 import me.darkwinged.coins.libraries.struts.Account;
 import me.darkwinged.coins.libraries.struts.Ticket;
@@ -7,13 +6,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitRunnable;
 import me.darkwinged.coins.libraries.struts.Lottery;
-import me.darkwinged.coins.libraries.struts.Lottery.LotteryType;
 
 import java.util.*;
 
+@SuppressWarnings("all")
 public class LotteryDraw extends BukkitRunnable {
-
-    private final Coins plugin = Coins.getInstance;
 
     @Override
     public void run() {
@@ -44,8 +41,6 @@ public class LotteryDraw extends BukkitRunnable {
     }
 
     private void drawWinners(Lottery lottery) {
-        // TODO get 5 random numbers and check against all tickets
-        // TODO tickets with 2 numbers get another chance, 3 numbers 50 coins, 4 numbers 200 coins, 5 numbers 1000 coins
         Map<Account, List<Ticket>> participants = lottery.getParticipants();
         if (participants.isEmpty()) return;
 

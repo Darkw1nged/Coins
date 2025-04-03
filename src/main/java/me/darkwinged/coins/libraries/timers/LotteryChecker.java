@@ -9,6 +9,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("all")
 public class LotteryChecker extends BukkitRunnable {
 
     @Override
