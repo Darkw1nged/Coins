@@ -1,8 +1,10 @@
 package me.darkwinged.coins.libraries;
 
 import me.darkwinged.coins.Coins;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
@@ -114,6 +116,38 @@ public class Utils {
         Plugin combatTag = plugin.getServer().getPluginManager().getPlugin("combat_tag");
         if (combatTag == null) return false;
         return combatTag.isEnabled() && combatTag.getConfig().getBoolean("combat-tag." + uuid + ".tagged");
+    }
+
+    // ---- [ Get day of the week ] ----
+    public String getDay() {
+        World world = Bukkit.getWorld("world");
+        long totalTimeActive = world.getFullTime();
+
+        // Calculate the number of days by dividing total time by 24000
+        long days = totalTimeActive / 24000;
+
+        // Map the days of the week, starting from Saturday (day 0)
+        String[] daysOfWeek = {"Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
+
+        // Use modulo to loop through the days of the week (ensures it wraps around correctly)
+        int dayIndex = (int)(days % 7);  // % 7 ensures the days repeat after 7 days
+
+        return daysOfWeek[dayIndex];
+    }
+
+    public String getCurrentTimeOfDay() {
+        World world = Bukkit.getWorld("world");
+        long totalTimeActive = world.getFullTime();
+
+        // Get the time of day (this will be the time modulo 24000 to get it within a single day cycle)
+        long timeOfDay = totalTimeActive % 24000;
+
+        // Calculate the hour of the day in Minecraft. Minecraft starts at 6:00 AM (0 ticks) as "morning".
+        long hours = (timeOfDay / 1000 + 6) % 24; // Add 6 to make it 6:00 AM at tick 0
+        long minutes = (timeOfDay % 1000) * 60 / 1000; // Get the minutes from the remainder
+
+        // Format the time in 24-hour format
+        return String.format("%02d:%02d", hours, minutes);
     }
 
 }
