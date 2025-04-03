@@ -3,6 +3,8 @@ package me.darkwinged.coins;
 import me.darkwinged.coins.commands.*;
 import me.darkwinged.coins.libraries.Manager;
 import me.darkwinged.coins.libraries.Utils;
+import me.darkwinged.coins.libraries.timers.LotteryChecker;
+import me.darkwinged.coins.libraries.timers.LotteryDraw;
 import me.darkwinged.coins.libraries.vault.CoinEconomy;
 import me.darkwinged.coins.libraries.vault.VaultHook;
 import me.darkwinged.coins.listeners.*;
@@ -23,6 +25,9 @@ public final class Coins extends JavaPlugin {
         vaultHook.hook();
         registerCommands();
         registerEvents();
+
+        new LotteryChecker().runTaskTimerAsynchronously(this, 20 * 5, 20 * 5);
+        new LotteryDraw().runTaskTimerAsynchronously(this, 20 * 5, 20 * 5);
 
         Manager.loadAllAccounts();
         Manager.loadCoinflips();

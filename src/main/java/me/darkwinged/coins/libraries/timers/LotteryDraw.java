@@ -1,9 +1,9 @@
-package me.darkwinged.coins.libraries;
+package me.darkwinged.coins.libraries.timers;
 import me.darkwinged.coins.Coins;
+import me.darkwinged.coins.libraries.Utils;
 import me.darkwinged.coins.libraries.struts.Account;
 import me.darkwinged.coins.libraries.struts.Ticket;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitRunnable;
 import me.darkwinged.coins.libraries.struts.Lottery;
@@ -11,7 +11,7 @@ import me.darkwinged.coins.libraries.struts.Lottery.LotteryType;
 
 import java.util.*;
 
-public class LotteryTimer extends BukkitRunnable {
+public class LotteryDraw extends BukkitRunnable {
 
     private final Coins plugin = Coins.getInstance;
 
@@ -20,35 +20,27 @@ public class LotteryTimer extends BukkitRunnable {
         World world = Bukkit.getWorld("world");
         if (world == null) return;
 
-        long totalTimeActive = world.getFullTime();
-        long timeOfDay = totalTimeActive % 24000;
+        String worldTime = Utils.getCurrentTimeOfDay();
+        if (worldTime.equalsIgnoreCase("")) return;
 
-        long hourOfDay = (timeOfDay / 1000 + 6) % 24;
-        long minutes = (timeOfDay % 1000) * 60 / 1000;
+        if (worldTime.equalsIgnoreCase("19:00")) {
+            for (Lottery lottery : Utils.activeLotteries) {
+                if (lottery.isClosed()) continue;
 
-        // Check if it's 7 PM (19:00) or 8 PM (20:00)
-        if (hourOfDay == 19 && minutes == 0) {
-            closeLottery();
-        } else if (hourOfDay == 20 && minutes == 0) {
-            drawLottery();
+                lottery.closeLottery();
+                Bukkit.broadcastMessage("");
+                Bukkit.broadcastMessage(Utils.chatColor("&6Lottery &8» &fThe lottery entries for &e" + lottery.getType().getType() + "&f have now closed! No further entries will be accepted."));
+                Bukkit.broadcastMessage("");
+            }
+        } else if (worldTime.equalsIgnoreCase("20:00")) {
+            for (Lottery lottery : Utils.activeLotteries) {
+                if (!lottery.isClosed()) continue;
+                drawWinners(lottery);
+                Bukkit.broadcastMessage("");
+                Bukkit.broadcastMessage(Utils.chatColor("&6Lottery &8» &fThe lottery winners for &e" + lottery.getType().getType() + "&f have been drawn!"));
+                Bukkit.broadcastMessage("");
+            }
         }
-    }
-
-    // Method to close the lottery at 7 PM
-    private void closeLottery() {
-        for (LotteryType type : LotteryType.values()) {
-            Lottery lottery = getLotteryByType(type);
-            lottery.closeLottery();
-            Bukkit.broadcastMessage("The lottery entries have now closed! No further entries will be accepted.");
-        }
-    }
-
-    // Method to trigger the lottery draw at 8 PM
-    private void drawLottery() {
-    }
-
-    private Lottery getLotteryByType(LotteryType type) {
-        return new Lottery(type);
     }
 
     private void drawWinners(Lottery lottery) {
@@ -79,9 +71,6 @@ public class LotteryTimer extends BukkitRunnable {
                 }
 
                 switch (matched) {
-                    case 2 -> {
-                        Ticket secondChance = new Ticket(account);
-                    }
                     case 3 -> {
                         double rewardTotal = 0;
                         if (rewards.containsKey(account)) {

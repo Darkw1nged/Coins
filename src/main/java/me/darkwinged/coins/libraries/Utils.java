@@ -1,6 +1,7 @@
 package me.darkwinged.coins.libraries;
 
 import me.darkwinged.coins.Coins;
+import me.darkwinged.coins.libraries.struts.Lottery;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -11,10 +12,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.text.NumberFormat;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class Utils {
 
@@ -22,6 +20,7 @@ public class Utils {
 
     // ---- [ Lists and Maps ] ----
     public static Map<ArmorStand, Long> activeHolograms = new HashMap<>();
+    public static List<Lottery> activeLotteries = new ArrayList<>();
 
     // ---- [ Managing chat color within the plugin ] ----
     public static String chatColor(String s) {
@@ -119,7 +118,7 @@ public class Utils {
     }
 
     // ---- [ Get day of the week ] ----
-    public String getDay() {
+    public static String getDay() {
         World world = Bukkit.getWorld("world");
         long totalTimeActive = world.getFullTime();
 
@@ -135,7 +134,7 @@ public class Utils {
         return daysOfWeek[dayIndex];
     }
 
-    public String getCurrentTimeOfDay() {
+    public static String getCurrentTimeOfDay() {
         World world = Bukkit.getWorld("world");
         long totalTimeActive = world.getFullTime();
 

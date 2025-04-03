@@ -10,12 +10,13 @@ Economy
    [COMPLETE] -> /coinflip create <amount> <choice> | Will create a new coinflip for the specified amount
    [COMPLETE] -> /leaderboard | Shows the top 10 player coin balance
    [COMPLETE] -> /insurance | Will open the insurance gui
+   -> /lottery | Will open the lottery gui
    /* Admin Only Commands */
    [COMPLETE] -> /economy <add|remove|set|> <player> <amount> | Changes the players coin balance
    [COMPLETE] -> /economy multiplier <player|server> <multiplier> | Changes the multiplier for either the player or server
 [COMPLETE] -> Leaderboard shows the top 10 people in the server
 [COMPLETE] -> Interest: Each day the player logs on, they gain interest, This can be upgraded, 10% interest max ( default: 1% | +1% upgrade each time )
--> Lottery: Each day, a new type of lottery will be drawn
+[COMPLETE] -> Lottery: Each day, a new type of lottery will be drawn
    -> Reference: https://www.spigotmc.org/resources/cocolottery.123210/
 [COMPLETE] -> Coin flip: The player can choose to play again a server or another player, defaults to server if no players are online
    -> Reference: https://www.spigotmc.org/resources/ycoinflip.123438/
