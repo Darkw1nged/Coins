@@ -37,7 +37,7 @@ public class cmdCoins implements CommandExecutor {
             Account playerAccount = Manager.getAccount(player.getUniqueId());
             if (playerAccount == null) {
                 sender.sendMessage(Utils.chatColor("&6Coins &8» &cAn internal error occurred, please contact your system administrator for assistance."));
-                return true;
+                 return true;
             }
 
             if (args.length < 1) {
