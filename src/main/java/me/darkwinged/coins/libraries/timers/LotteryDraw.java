@@ -62,6 +62,8 @@ public class LotteryDraw extends BukkitRunnable {
         Map<Account, List<Ticket>> participants = lottery.getParticipants();
         if (participants.isEmpty()) return 0;
 
+        lottery.updatePrizeFund();
+
         // Generate 6 unique random numbers
         List<Integer> lotteryNumbers = new ArrayList<>();
         Random random = new Random();
