@@ -1,6 +1,5 @@
 package me.darkwinged.coins.menus;
 
-import me.darkwinged.coins.Coins;
 import me.darkwinged.coins.libraries.Manager;
 import me.darkwinged.coins.libraries.Utils;
 import me.darkwinged.coins.libraries.struts.Account;
@@ -11,18 +10,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
 import java.util.Calendar;
-import java.util.Date;
 
 public class menuInsurance extends Menu {
-
-    private final Coins plugin = Coins.getInstance;
 
     public menuInsurance(Player player) {
         super(player);
     }
 
     public String getMenuName() {
-        return Utils.chatColor("&7Insurance");
+        return Utils.chatColor("&8Insurance");
     }
 
     public int getSlots() {

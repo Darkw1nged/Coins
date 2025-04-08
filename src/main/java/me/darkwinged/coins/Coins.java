@@ -60,6 +60,7 @@ public final class Coins extends JavaPlugin {
         getCommand("coinflip").setExecutor(new cmdCoinflip());
         getCommand("leaderboard").setExecutor(new cmdLeaderboard());
         getCommand("insurance").setExecutor(new cmdInsurance());
+        getCommand("lottery").setExecutor(new cmdLottery());
     }
 
 }

@@ -19,7 +19,10 @@ public class ScavengeEvent implements Listener {
         Account account = Manager.getAccount(player.getUniqueId());
         if (account == null) return;
 
-        double toGive = Math.random() * 200 + 25;
+        if (Math.random() > 0.1) return;
+
+        double toGive = Math.random() * 25 + 5;
+        toGive = Math.floor(toGive);
 
         switch (block.getType()) {
             case AZALEA:
@@ -87,7 +90,7 @@ public class ScavengeEvent implements Listener {
             case WARPED_FUNGUS:
             case GLOW_BERRIES:
                 account.addCoins(toGive);
-                Utils.moveUpHologram(Utils.chatColor("&a+" + toGive), block.getLocation(), 2);
+                Utils.moveUpHologram(Utils.chatColor("&a+" + String.format("%.0f", toGive)), block.getLocation(), 2);
         }
 
     }

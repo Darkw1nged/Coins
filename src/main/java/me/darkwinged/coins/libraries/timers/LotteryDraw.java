@@ -1,4 +1,5 @@
 package me.darkwinged.coins.libraries.timers;
+import me.darkwinged.coins.Coins;
 import me.darkwinged.coins.libraries.Utils;
 import me.darkwinged.coins.libraries.struts.Account;
 import me.darkwinged.coins.libraries.struts.Ticket;
@@ -18,81 +19,107 @@ public class LotteryDraw extends BukkitRunnable {
         if (world == null) return;
 
         String worldTime = Utils.getCurrentTimeOfDay();
-        if (worldTime.equalsIgnoreCase("")) return;
+        if (worldTime == null || worldTime.isEmpty()) return;
+        String hour = worldTime.split(":")[0];
 
-        if (worldTime.equalsIgnoreCase("19:00")) {
-            for (Lottery lottery : Utils.activeLotteries) {
-                if (lottery.isClosed()) continue;
-
-                lottery.closeLottery();
-                Bukkit.broadcastMessage("");
-                Bukkit.broadcastMessage(Utils.chatColor("&6Lottery &8» &fThe lottery entries for &e" + lottery.getType().getType() + "&f have now closed! No further entries will be accepted."));
-                Bukkit.broadcastMessage("");
-            }
-        } else if (worldTime.equalsIgnoreCase("20:00")) {
-            for (Lottery lottery : Utils.activeLotteries) {
-                if (!lottery.isClosed()) continue;
-                drawWinners(lottery);
-                Bukkit.broadcastMessage("");
-                Bukkit.broadcastMessage(Utils.chatColor("&6Lottery &8» &fThe lottery winners for &e" + lottery.getType().getType() + "&f have been drawn!"));
-                Bukkit.broadcastMessage("");
-            }
+        switch (hour) {
+            case "19" -> closeActiveLotteries();
+            case "20" -> drawAndClearLotteries();
         }
     }
 
-    private void drawWinners(Lottery lottery) {
-        Map<Account, List<Ticket>> participants = lottery.getParticipants();
-        if (participants.isEmpty()) return;
+    private void closeActiveLotteries() {
+        for (Lottery lottery : Utils.activeLotteries) {
+            if (lottery.isClosed()) continue;
 
-        List<Integer> lotteryNumbers = new ArrayList<>();
-        Random random = new Random();
-        int generatedNumbers=0;
-        while (generatedNumbers < 6) {
-            int number = random.nextInt(59);
-            if (lotteryNumbers.contains(number)) continue;
-            lotteryNumbers.add(number);
-            generatedNumbers++;
+            lottery.closeLottery();
+            Bukkit.broadcastMessage("");
+            Bukkit.broadcastMessage(Utils.chatColor("&6Lottery &8» &fThe lottery entries have now closed! No further entries will be accepted."));
+            Bukkit.broadcastMessage("");
+        }
+    }
+
+    private void drawAndClearLotteries() {
+        // Create a new list to avoid ConcurrentModificationException
+        List<Lottery> toRemove = new ArrayList<>();
+
+        for (Lottery lottery : Utils.activeLotteries) {
+            if (!lottery.isClosed()) continue;
+
+            int winners = drawWinners(lottery);
+            Bukkit.broadcastMessage("");
+            Bukkit.broadcastMessage(Utils.chatColor("&6Lottery &8» &fThe lottery winners have been drawn!"));
+            Bukkit.broadcastMessage(Utils.chatColor("&6Lottery &8» &fThere were &a" + winners + " &fwinners!"));
+            Bukkit.broadcastMessage("");
+
+            toRemove.add(lottery);
         }
 
+        Utils.activeLotteries.removeAll(toRemove);
+    }
+
+    private int drawWinners(Lottery lottery) {
+        Map<Account, List<Ticket>> participants = lottery.getParticipants();
+        if (participants.isEmpty()) return 0;
+
+        // Generate 6 unique random numbers
+        List<Integer> lotteryNumbers = new ArrayList<>();
+        Random random = new Random();
+        while (lotteryNumbers.size() < 6) {
+            int number = random.nextInt(59);
+            if (!lotteryNumbers.contains(number)) {
+                lotteryNumbers.add(number);
+            }
+        }
+
+        double prizeFund = lottery.getPrizeFund();
+        boolean jackpotWon = false;
         Map<Account, Double> rewards = new HashMap<>();
-        for (Account account : participants.keySet()) {
-            List<Ticket> tickets = participants.get(account);
+
+        // Calculate matches and determine winners
+        for (Map.Entry<Account, List<Ticket>> entry : participants.entrySet()) {
+            Account account = entry.getKey();
+            List<Ticket> tickets = entry.getValue();
+
             for (Ticket ticket : tickets) {
                 int matched = 0;
                 for (int number : ticket.getNumbers()) {
-                    if (lotteryNumbers.contains(number)) {
-                        matched++;
-                    }
+                    if (lotteryNumbers.contains(number)) matched++;
                 }
 
-                switch (matched) {
-                    case 3 -> {
-                        double rewardTotal = 0;
-                        if (rewards.containsKey(account)) {
-                            rewardTotal += rewards.get(account);
-                        }
-                        rewardTotal += 50;
-                        rewards.put(account, rewardTotal);
-                    }
-                    case 4 -> {
-                        double rewardTotal = 0;
-                        if (rewards.containsKey(account)) {
-                            rewardTotal += rewards.get(account);
-                        }
-                        rewardTotal += 200;
-                        rewards.put(account, rewardTotal);
-                    }
-                    case 5 -> {
-                        double rewardTotal = 0;
-                        if (rewards.containsKey(account)) {
-                            rewardTotal += rewards.get(account);
-                        }
-                        rewardTotal += 1000;
-                        rewards.put(account, rewardTotal);
+                // If there's a jackpot winner, mark it and break
+                if (matched == 5) {
+                    jackpotWon = true;
+                    rewards.put(account, prizeFund); // Full prize fund to jackpot winner(s)
+                } else if (!jackpotWon) {
+                    // Only allow lower-tier rewards if no jackpot winner
+                    switch (matched) {
+                        case 4 -> rewards.merge(account, prizeFund * 0.25, Double::sum);
+                        case 3 -> rewards.merge(account, prizeFund * 0.1, Double::sum);
                     }
                 }
             }
         }
 
+        // Distribute rewards
+        double totalPayout = 0;
+        for (Map.Entry<Account, Double> rewardEntry : rewards.entrySet()) {
+            Account account = rewardEntry.getKey();
+            double reward = rewardEntry.getValue();
+            if (reward > 0) {
+                account.addCoins(reward);
+                totalPayout += reward;
+            }
+        }
+
+        // Update prize fund or rollover
+        if (!jackpotWon) {
+        } else {
+            double newFund = prizeFund - totalPayout;
+            Coins.getInstance.getConfig().set("lottery-rollover", Math.max(newFund, 0));
+        }
+
+        return rewards.size();
     }
+
 }

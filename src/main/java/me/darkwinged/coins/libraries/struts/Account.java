@@ -147,14 +147,14 @@ public class Account {
     }
 
     public double addInterest() {
-        double toAdd = (this.coins / 100) * this.interest;
+        double toAdd = Math.floor((this.coins / 100) * this.interest);
         this.coins += toAdd;
         this.lastGained = System.currentTimeMillis();
         return toAdd;
     }
 
     public double applyPenalty() {
-        double toTake = (this.coins / 100) * this.penalty;
+        double toTake = Math.floor((this.coins / 100) * this.penalty);
         this.coins -= toTake;
         return toTake;
     }

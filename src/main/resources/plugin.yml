@@ -29,3 +29,9 @@ commands:
     description: Allows players to see who has the most coins
   insurance:
     description: Allows players to buy insurance for their items and experience
+    aliases:
+      - insure
+  lottery:
+    description: Allows players to buy lottery tickets
+    aliases:
+      - lotto

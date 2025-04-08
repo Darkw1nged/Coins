@@ -117,23 +117,6 @@ public class Utils {
         return combatTag.isEnabled() && combatTag.getConfig().getBoolean("combat-tag." + uuid + ".tagged");
     }
 
-    // ---- [ Get day of the week ] ----
-    public static String getDay() {
-        World world = Bukkit.getWorld("world");
-        long totalTimeActive = world.getFullTime();
-
-        // Calculate the number of days by dividing total time by 24000
-        long days = totalTimeActive / 24000;
-
-        // Map the days of the week, starting from Saturday (day 0)
-        String[] daysOfWeek = {"Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
-
-        // Use modulo to loop through the days of the week (ensures it wraps around correctly)
-        int dayIndex = (int)(days % 7);  // % 7 ensures the days repeat after 7 days
-
-        return daysOfWeek[dayIndex];
-    }
-
     public static String getCurrentTimeOfDay() {
         World world = Bukkit.getWorld("world");
         if (world == null) return "00:00"; // Fallback in case the world is not found

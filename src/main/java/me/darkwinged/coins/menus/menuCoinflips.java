@@ -26,7 +26,7 @@ public class menuCoinflips extends Menu {
     }
 
     public String getMenuName() {
-        return Utils.chatColor("&7Coinflips");
+        return Utils.chatColor("&8Coinflips");
     }
 
     public int getSlots() {
