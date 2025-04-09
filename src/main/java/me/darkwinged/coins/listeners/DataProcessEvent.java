@@ -24,7 +24,7 @@ public class DataProcessEvent implements Listener {
         if (System.currentTimeMillis() < (account.getLastGained() + (24 * 60 * 60 * 1000))) return;
 
         double gained = account.addInterest();
-        player.sendMessage(Utils.chatColor("&6Coins &8» &fWelcome back! Today you have gained &a" + gained + " &8(" + account.getInterest() + "%) &f coins!"));
+        player.sendMessage(Utils.chatColor("&6Coins &8» &fWelcome back! Today you have gained &a" + gained + " &8(" + account.getInterest() + "%) &fcoins!"));
     }
 
     @EventHandler
